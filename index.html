@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>校園安全</title>
+
+  <!-- App 圖示與安裝設定 -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="校園安全">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#c62828">
+
+  <style>
+    html, body { margin: 0; height: 100%; background: #f4f6f8; font-family: "Noto Sans TC", sans-serif; }
+    body { display: flex; flex-direction: column; height: 100dvh;
+           padding-top: env(safe-area-inset-top); box-sizing: border-box; }
+    .call { display: block; margin: 12px 16px 0; text-align: center; background: #c62828; color: #fff;
+            text-decoration: none; font-size: 24px; font-weight: bold; padding: 22px 0; border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.25); }
+    .call small { display: block; font-size: 14px; font-weight: normal; margin-top: 4px; }
+    iframe { flex: 1; width: 100%; border: 0; }
+    #offline { display: none; margin: 16px; padding: 16px; background: #fff; border-radius: 12px;
+               text-align: center; color: #555; }
+  </style>
+</head>
+<body>
+  <!-- ★ 設定 1：tel: 後面換成 24 小時校安專線（只留數字） -->
+  <a class="call" href="tel:077358800">📞 一鍵撥打校安專線<small>24 小時｜緊急事件請直接撥打</small></a>
+
+  <div id="offline">目前沒有網路，無法送出意見反映。<br>緊急事件請直接按上方按鈕撥打校安專線。</div>
+
+  <!-- ★ 設定 2：src 換成 Apps Script 網頁應用程式網址，結尾保留 ?embed=1 -->
+  <iframe id="app" src="https://script.google.com/macros/s/1ydRq_NjFu30JF28BbCfNdsXgYkAsyZMIdrII-0s0UF0/exec?embed=1"
+          allow="clipboard-write"></iframe>
+
+  <script>
+    // 註冊 service worker：沒網路時頁面仍可開啟，撥號按鈕照樣能用
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+    function updateOnline() {
+      var on = navigator.onLine;
+      document.getElementById('offline').style.display = on ? 'none' : 'block';
+      document.getElementById('app').style.display = on ? 'block' : 'none';
+    }
+    window.addEventListener('online', updateOnline);
+    window.addEventListener('offline', updateOnline);
+    updateOnline();
+  </script>
+</body>
+</html>
