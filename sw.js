@@ -1,7 +1,7 @@
 // 快取外殼頁面：沒網路時仍能開啟 App 並撥打校安專線
 // 修改 index.html 後，把 v1 改成 v2、v3…，手機才會抓到新版
-const CACHE = 'xiaoan-v1';
-const FILES = ['./', './index.html', './manifest.json',
+const CACHE = 'xiaoan-v2';
+const FILES = ['./', './index.html', './manifest.json', './install.js',
                './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
